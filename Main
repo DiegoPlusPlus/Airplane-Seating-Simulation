@@ -1,0 +1,161 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    int done = 0;
+    int rows = 13;
+    int columns = 6;
+    int row, column;
+    bool taken = false; //Wasn't working (I didn't use it) I'll ask a question about why it wasn't working in class. (Tried using it to check if seat was taken.
+    int it = 0;
+    int total = 0;
+
+
+
+    int row_num[rows];
+    for (int i = 0; i < rows; i++) {
+        row_num[i] = i + 1; //Must start on 1. (I tried starting i on 1 but I got random output)
+    }
+
+    char seats[rows][columns]; //Scary 2D array
+    for (int i = 0; i < rows; i++) {
+
+        for (int j = 0; j < columns; j++) {
+            seats[i][j] = '*'; //Initialized every element with an asterisk
+        }
+    }
+
+    cout << "Do you want to reserve a seat? (Yes (Y/y) or No (N/n))" << endl;
+    char choice;
+    cin >> choice;
+
+    if (choice == 'Y' || choice == 'y') {
+        cout << "       A B C D E F" << endl;
+
+        for (int i = 0; i < rows; i++) {
+
+            if (i < rows - 4) {
+                cout << "Row " << row_num[i] << "  "; //Fidgeted with the for loop because it wasn't coming out level.
+            }                                         // This first if is for single digit numbers
+            else {
+                cout << "Row " << row_num[i] << " ";  //This else is for double digit numbers (1 space)
+            }
+
+        for (int j = 0; j < columns; j++) {
+            cout << seats[i][j] << " "; //All elements will begin with an asterisk
+        }
+
+        cout << endl;
+        }
+    }
+
+    do {
+
+    if (choice == 'Y' || choice == 'y') { //Choice checker
+        cout << "Please select your ticket type (first class (F/f), business class (B/b), or economy class (E/e))" << endl;
+        char ticket;
+        cin >> ticket;
+
+
+        if (ticket == 'F' || ticket == 'f') {
+        cout << "Please select your desired seat (row(1-2) and column(1-6))" << endl;
+        int row;
+        int column;
+        cin >> row >> column;
+        column = column - 1;
+                row = row - 1;
+
+         seats[row][column] = 'X';
+
+            if (row < 0 || row > 1 || column < 0 || column > 5) {
+                cout << "Out of seat range for first class" << endl; //Range Check
+                return 1;
+            }
+        }
+        else if (ticket == 'B' || ticket == 'b') {
+        cout << "Please select your desired seat (row(3-7) and column(1-6))" << endl;
+        int row;
+        int column;
+        cin >> row >> column;
+        column = column - 1;
+                row = row - 1;
+
+        seats[row][column] = 'X';
+
+            if (row < 2 || row > 6 || column < 0 || column > 5) {
+                cout << "Out of seat range for business class" << endl; //Range Check
+                return 1;
+            }
+        }
+        else if (ticket == 'E' || ticket == 'e') {
+        cout << "Please select your desired seat (row(8-13) and column(1-6))" << endl;
+        int row;
+        int column;
+        cin >> row >> column;
+
+        column = column - 1;
+            row = row - 1;
+        seats[row][column] = 'X';
+
+            if (row < 7 || row > 12 || column < 0 || column > 5) {
+                cout << "Out of seat range for Economy class" << endl;  //Range Check
+                return 1;
+            }
+        }
+    }
+    else {
+        return 0;
+    }
+
+
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            if (seats[i][j] == 'X') {
+                it += 1;                    //Very slow time complexity but I'm using it to check how many seats are taken
+            }                               //vs how many times the program was run. If it's less, it'll end it.
+        }
+    }
+    if (it <= total) {
+        cout << "That seat was already taken. Thank you for shopping with Diego Skylines." << endl;
+        return 0;
+    }
+    it = 0; //Resets in order to accurately check next loop
+
+
+        cout << "That seat is taken." << endl;
+
+
+
+    cout << "       A  B  C  D  E  F" << endl;
+
+
+    for (int i = 0; i < rows; i++) {
+
+            if (i < rows - 4) {
+                cout << "Row " << row_num[i] << "  ";
+            }
+            else {
+                cout << "Row " << row_num[i] << " ";
+            }
+        for (int j = 0; j < columns; j++) {
+            cout << seats[i][j] << "  ";                //Outputting seats
+
+        }
+
+
+        cout << endl;
+    }
+    total += 1;
+    cout << "Do you want to reserve another seat? (Yes (Y/y) or No (N/n))" << endl;
+    char choice;            //Will decide whether to continue running or not
+    cin >> choice;
+    if (choice == 'N' || choice == 'n') {
+        done = 1;
+    }
+    } while(done != 1);
+    cout << "Thanks for shopping with Diego Skylines" << endl;
+    return 0;
+}
